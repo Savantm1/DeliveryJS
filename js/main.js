@@ -1,16 +1,8 @@
+'use strict';
+
 const cartButton = document.querySelector("#cart-button");
 const modal = document.querySelector(".modal");
 const close = document.querySelector(".close");
-
-cartButton.addEventListener("click", toggleModal);
-close.addEventListener("click", toggleModal);
-
-function toggleModal() {
-  modal.classList.toggle("is-open");
-}
-
-// день первый
-
 const buttonAuth = document.querySelector('.button-auth');
 const modalAuth = document.querySelector('.modal-auth');
 const closeAuth = document.querySelector('.close-auth');
@@ -19,12 +11,19 @@ const loginInput = document.querySelector('#login');
 const passwordInput = document.querySelector('#password');
 const userName = document.querySelector('.user-name');
 const buttonOut = document.querySelector('.button-out');
+const cardsRestaurants = document.querySelector('.cards-restaurants');
+const containerPromo = document.querySelector('.container-promo');
+const restaurants = document.querySelector('.restaurants');
+const menu = document.querySelector('.menu');
+const logo = document.querySelector('.logo');
+const cardsMenu = document.querySelector('.cards-menu');
 
 let login = localStorage.getItem('delivery');
 
 
-buttonAuth.addEventListener('click', toggleModalAuth);
-closeAuth.addEventListener('click', toggleModalAuth);
+function toggleModal() {
+  modal.classList.toggle("is-open");
+}
 
 
 //ф-ция  открытия/скрытия модального окна
@@ -124,5 +123,102 @@ function checkAuth() {
 
 };
 
-checkAuth();
 
+// ф-ция создания карты рессторана
+function createCardRestaurant() {
+
+  const card = `
+      <a class="card card-restaurant">
+        <img src="img/tanuki/preview.jpg" alt="image" class="card-image"/>
+        <div class="card-text">
+          <div class="card-heading">
+            <h3 class="card-title">Тануки</h3>
+            <span class="card-tag tag">60 мин</span>
+          </div>
+
+          <div class="card-info">
+            <div class="rating">
+              4.5
+            </div>
+            <div class="price">От 1 200 ₽</div>
+            <div class="category">Суши, роллы</div>
+          </div>
+        </div>
+      </a>
+  `;
+
+  cardsRestaurants.insertAdjacentHTML('beforeend', card);
+
+};
+
+createCardRestaurant();
+createCardRestaurant();
+createCardRestaurant();
+
+function createCardGood() {
+  const card = document.createElement('div');
+  card.className = 'card';
+  card.insertAdjacentHTML('beforeend', `
+
+          <img src="img/pizza-plus/pizza-classic.jpg" alt="image" class="card-image"/>
+          <div class="card-text">
+            <div class="card-heading">
+              <h3 class="card-title card-title-reg">Пицца Классика</h3>
+            </div>
+            <div class="card-info">
+              <div class="ingredients">Соус томатный, сыр «Моцарелла», сыр «Пармезан», ветчина, салями,
+                грибы.
+              </div>
+            </div>
+            <div class="card-buttons">
+              <button class="button button-primary button-add-cart">
+                <span class="button-card-text">В корзину</span>
+                <span class="button-cart-svg"></span>
+              </button>
+              <strong class="card-price-bold">510 ₽</strong>
+            </div>
+          </div>
+  
+  `);
+
+  cardsMenu.insertAdjacentElement("beforeend", card);
+};
+
+//ф-ция создания товоров
+function openGoods(evt) {
+
+  const target = event.target;
+
+  const restaurant = target.closest('.card-restaurant');
+  
+  if (restaurant) {
+
+    cardsMenu.textContent = '';
+
+    restaurants.classList.add('hide');
+    containerPromo.classList.add('hide');
+    menu.classList.remove('hide');
+
+    createCardGood();
+    createCardGood();
+    createCardGood();
+    
+  };
+};
+
+cartButton.addEventListener("click", toggleModal);
+close.addEventListener("click", toggleModal);
+buttonAuth.addEventListener('click', toggleModalAuth);
+closeAuth.addEventListener('click', toggleModalAuth);
+cardsRestaurants.addEventListener('click', openGoods);
+logo.addEventListener('click', ()=> {
+  
+  restaurants.classList.remove('hide');
+  containerPromo.classList.remove('hide');
+  menu.classList.add('hide');
+
+  }
+);
+
+
+checkAuth();
